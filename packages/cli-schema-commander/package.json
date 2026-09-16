@@ -1,0 +1,62 @@
+{
+  "name": "@cairn-tool/cli-schema-commander",
+  "version": "0.0.0-development",
+  "type": "module",
+  "description": "commander.js emitter for the portable CLI-description schema",
+  "license": "MIT",
+  "author": "Bryan Stockus",
+  "keywords": [
+    "cli",
+    "commander",
+    "schema",
+    "describe"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cairn-tool/cli-schema.git",
+    "directory": "packages/cli-schema-commander"
+  },
+  "bugs": {
+    "url": "https://github.com/cairn-tool/cli-schema/issues"
+  },
+  "homepage": "https://github.com/cairn-tool/cli-schema#readme",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build -w @cairn-tool/cli-schema && npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@cairn-tool/cli-schema": "0.0.0-development"
+  },
+  "peerDependencies": {
+    "commander": "^13 || ^14 || ^15"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "commander": "^15.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^5.0.0"
+  }
+}

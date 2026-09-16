@@ -1,0 +1,81 @@
+name: Release
+
+# Gated on CI rather than on push. cairn shipped a broken v1.0.2 by releasing
+# off `push` while the matrix was still red. Waiting for CI means the whole
+# support matrix has passed, and lets this job skip re-running the tests.
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  # `npm ci` runs `prepare: husky`, which would install the commit-msg hook into
+  # the runner's checkout — and that hook would then reject semantic-release's
+  # own release commit. Git hooks have no purpose in CI.
+  HUSKY: 0
+
+jobs:
+  release:
+    name: Publish npm and NuGet
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    # Only for a green CI run on a push to main — not for PR CI runs.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          registry-url: https://registry.npmjs.org
+          scope: "@cairn-tool"
+
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      # Trusted publishing needs npm >= 11.5.1. Node 22 bundled 10.9.7; this
+      # job uses .nvmrc (26), but we still pin npm@12 so the OIDC exchange is
+      # performed by a client that supports it.
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@12
+
+      - run: npm ci
+      - run: npm run build
+
+      # Auth precedence is the plugin's: OIDC first, token fallback.
+      # NPM_TOKEN is a bootstrap, not the intended path — npm configures a
+      # trusted publisher on an existing package's settings page, which a
+      # package that has never been published does not have. Publish once with
+      # the token, configure the trusted publisher against this workflow
+      # filename, then delete the secret.
+      #
+      # NUGET_API_KEY needs either a reserved `Cairn.` prefix on nuget.org or
+      # one manual first push. `--skip-duplicate` makes a re-run safe.
+      - name: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: npx semantic-release

@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1",
+  "tool": {
+    "name": "demo",
+    "version": "0.0.0"
+  },
+  "formatShorthands": {},
+  "schemas": [],
+  "commands": [
+    {
+      "id": "flag",
+      "path": ["flag"],
+      "description": "A boolean flag",
+      "usage": "demo flag [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--verbose",
+          "aliases": ["-v"],
+          "description": "Be loud",
+          "valueName": null,
+          "arity": { "min": 0, "max": 0 },
+          "required": false,
+          "negatable": false,
+          "valueType": "boolean",
+          "allowedValues": null,
+          "recursive": false
+        }
+      ],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "value",
+      "path": ["value"],
+      "description": "A single-value option",
+      "usage": "demo value [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--output",
+          "aliases": [],
+          "description": "Output path",
+          "valueName": "path",
+          "arity": { "min": 1, "max": 1 },
+          "required": false,
+          "negatable": false,
+          "valueType": "string",
+          "allowedValues": null,
+          "recursive": false,
+          "default": "out.txt"
+        }
+      ],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "variadic",
+      "path": ["variadic"],
+      "description": "A variadic argument",
+      "usage": "demo variadic [files...]",
+      "arguments": [
+        {
+          "name": "files",
+          "description": "Input files",
+          "arity": { "min": 0, "max": null },
+          "valueType": "string",
+          "allowedValues": null
+        }
+      ],
+      "options": [],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "repeat",
+      "path": ["repeat"],
+      "description": "A repeatable option",
+      "usage": "demo repeat [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--tag",
+          "aliases": [],
+          "description": "A tag",
+          "valueName": "tag",
+          "arity": { "min": 1, "max": null },
+          "required": false,
+          "negatable": false,
+          "valueType": "string",
+          "allowedValues": null,
+          "recursive": false
+        }
+      ],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "enum",
+      "path": ["enum"],
+      "description": "An option with allowed values",
+      "usage": "demo enum [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--format",
+          "aliases": [],
+          "description": "Output format",
+          "valueName": "fmt",
+          "arity": { "min": 1, "max": 1 },
+          "required": false,
+          "negatable": false,
+          "valueType": "string",
+          "allowedValues": ["Json", "Text"],
+          "recursive": false
+        }
+      ],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "negate",
+      "path": ["negate"],
+      "description": "A negated boolean option",
+      "usage": "demo negate [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--no-config",
+          "aliases": [],
+          "description": "Disable config",
+          "valueName": null,
+          "arity": { "min": 0, "max": 0 },
+          "required": false,
+          "negatable": true,
+          "valueType": "boolean",
+          "allowedValues": null,
+          "recursive": false
+        }
+      ],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    }
+  ]
+}

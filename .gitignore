@@ -1,0 +1,37 @@
+# Build output
+dist/
+*.tsbuildinfo
+*.js.map
+bin/
+obj/
+.artifacts/
+artifacts/
+
+# Dependencies
+node_modules/
+
+# Test / tooling caches
+coverage/
+.vitest/
+.eslintcache
+
+# Packing artifacts
+*.tgz
+*.nupkg
+dist-nuget/
+
+# OS / editor
+.DS_Store
+*.swp
+.vs/
+*.user
+
+# Plan editor scratch. Other .cursor/ files (rules, skills) may be committed.
+.cursor/plans/
+
+# Husky internals (generated on install)
+.husky/_/
+
+# NuGet
+*.snupkg
+project.lock.json
