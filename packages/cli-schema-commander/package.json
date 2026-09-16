@@ -48,7 +48,7 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@cairn-tool/cli-schema": "0.0.0-development"
+    "@cairn-tool/cli-schema": "*"
   },
   "peerDependencies": {
     "commander": "^13 || ^14 || ^15"

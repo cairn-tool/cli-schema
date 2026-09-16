@@ -63,19 +63,29 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # Auth precedence is the plugin's: OIDC first, token fallback.
+      # Exchanges this job's OIDC token for a short-lived nuget.org API key
+      # under the trusted-publishing policy on the `user` account. The policy
+      # is bound to this repository and this workflow filename (no
+      # environment), so renaming the file breaks publishing. There is no
+      # stored NuGet secret; the policy allows new package IDs, so the first
+      # push needs no manual bootstrap. `--skip-duplicate` in the publish
+      # command makes a re-run safe.
+      - name: Log in to nuget.org
+        id: nuget-login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: bstockus
+
+      # npm auth precedence is the plugin's: OIDC first, token fallback.
       # NPM_TOKEN is a bootstrap, not the intended path — npm configures a
       # trusted publisher on an existing package's settings page, which a
       # package that has never been published does not have. Publish once with
       # the token, configure the trusted publisher against this workflow
       # filename, then delete the secret.
-      #
-      # NUGET_API_KEY needs either a reserved `Cairn.` prefix on nuget.org or
-      # one manual first push. `--skip-duplicate` makes a re-run safe.
       - name: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         run: npx semantic-release
