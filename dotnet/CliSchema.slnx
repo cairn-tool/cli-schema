@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CairnTool.CliSchema/CairnTool.CliSchema.csproj" />
+    <Project Path="src/CairnTool.CliSchema.SystemCommandLine/CairnTool.CliSchema.SystemCommandLine.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CairnTool.CliSchema.Tests/CairnTool.CliSchema.Tests.csproj" />
+    <Project Path="tests/CairnTool.CliSchema.SystemCommandLine.Tests/CairnTool.CliSchema.SystemCommandLine.Tests.csproj" />
+  </Folder>
+  <Folder Name="/_SolutionFolder/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="nuget.config" />
+  </Folder>
+</Solution>

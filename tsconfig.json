@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "eslint.config.js",
+    "commitlint.config.js",
+    "packages/cli-schema/src/**/*.ts",
+    "packages/cli-schema/tests/**/*.ts",
+    "packages/cli-schema-commander/src/**/*.ts",
+    "packages/cli-schema-commander/tests/**/*.ts"
+  ]
+}

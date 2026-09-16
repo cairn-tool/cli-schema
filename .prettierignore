@@ -1,0 +1,10 @@
+dist/
+node_modules/
+coverage/
+artifacts/
+.artifacts/
+bin/
+obj/
+package-lock.json
+CHANGELOG.md
+*.slnx

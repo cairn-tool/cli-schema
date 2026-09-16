@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <PackageId>CairnTool.CliSchema</PackageId>
+    <Authors>Bryan Stockus</Authors>
+    <Description>Portable CLI-description model, JSON Schema, usage builder, and text renderer.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/cairn-tool/cli-schema</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cairn-tool/cli-schema</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>cli;schema;describe</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\spec\v1\cli-schema.json" Link="cli-schema.json" LogicalName="CairnTool.CliSchema.cli-schema.json" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <Content Include="..\..\..\spec\v1\cli-schema.json" Pack="true" PackagePath="content/cli-schema.json" />
+  </ItemGroup>
+</Project>

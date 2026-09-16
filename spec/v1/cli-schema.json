@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cairn-tool/cli-schema/v1/cli-schema.json",
+  "title": "CLI contract description",
+  "description": "The static contract of a command-line interface. Project configuration is not applied. Consumers must ignore properties they do not recognize.",
+  "type": "object",
+  "required": ["schemaVersion", "tool", "formatShorthands", "schemas", "commands"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "tool": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "formatShorthands": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "argv token to the --format value it expands to before parsing."
+    },
+    "advisoryOutput": {
+      "type": "object",
+      "description": "Machine-stream guarantees for an advisory notice. Omitted when the tool has none.",
+      "required": ["description", "stream", "suppressedWhen", "optOutEnv"],
+      "properties": {
+        "description": { "type": "string" },
+        "stream": { "enum": ["stdout", "stderr"] },
+        "suppressedWhen": { "type": "array", "items": { "type": "string" } },
+        "optOutEnv": { "type": "string" }
+      }
+    },
+    "schemas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "uri", "title", "commands"],
+        "properties": {
+          "id": { "type": "string" },
+          "uri": { "type": "string" },
+          "title": { "type": "string" },
+          "commands": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/command" }
+    }
+  },
+  "$defs": {
+    "arity": {
+      "type": "object",
+      "required": ["min", "max"],
+      "properties": {
+        "min": { "type": "integer", "minimum": 0 },
+        "max": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "valueType": {
+      "type": ["string", "null"],
+      "enum": ["boolean", "string", "integer", "number", null]
+    },
+    "command": {
+      "type": "object",
+      "required": [
+        "id",
+        "path",
+        "description",
+        "usage",
+        "arguments",
+        "options",
+        "subcommands",
+        "formats",
+        "defaultFormat",
+        "formatConfigurable",
+        "outputSchema",
+        "exitCodes",
+        "stream",
+        "writes",
+        "stability"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Space-joined command path, e.g. 'md graph'."
+        },
+        "path": { "type": "array", "items": { "type": "string" } },
+        "description": { "type": "string" },
+        "usage": { "type": "string" },
+        "arguments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/argument" }
+        },
+        "options": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/option" }
+        },
+        "subcommands": { "type": "array", "items": { "type": "string" } },
+        "formats": { "type": ["array", "null"], "items": { "type": "string" } },
+        "defaultFormat": { "type": ["string", "null"] },
+        "formatConfigurable": { "type": "boolean" },
+        "outputSchema": { "type": ["string", "null"] },
+        "jsonlSchema": { "type": ["string", "null"] },
+        "sarifSchema": { "type": ["string", "null"] },
+        "exitCodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["code", "meaning"],
+            "properties": {
+              "code": { "type": "integer" },
+              "meaning": { "type": "string" }
+            }
+          }
+        },
+        "exitCodePassthrough": {
+          "type": "object",
+          "description": "Present only when the command forwards a child process's exit status verbatim.",
+          "required": ["min", "max", "description"],
+          "properties": {
+            "min": { "type": "integer" },
+            "max": { "type": "integer" },
+            "description": { "type": "string" }
+          }
+        },
+        "stream": {
+          "type": ["object", "null"],
+          "properties": {
+            "success": { "enum": ["stdout", "stderr"] },
+            "findings": { "enum": ["stdout", "stderr"] }
+          }
+        },
+        "writes": { "type": ["boolean", "null"] },
+        "stability": { "enum": ["stable", "experimental", "undeclared"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "argument": {
+      "type": "object",
+      "required": ["name", "description", "arity", "valueType", "allowedValues"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "arity": { "$ref": "#/$defs/arity" },
+        "valueType": { "$ref": "#/$defs/valueType" },
+        "allowedValues": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "default": true
+      }
+    },
+    "option": {
+      "type": "object",
+      "required": [
+        "name",
+        "aliases",
+        "description",
+        "valueName",
+        "arity",
+        "required",
+        "negatable",
+        "valueType",
+        "allowedValues",
+        "recursive"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "description": { "type": "string" },
+        "valueName": { "type": ["string", "null"] },
+        "arity": { "$ref": "#/$defs/arity" },
+        "required": { "type": "boolean" },
+        "negatable": { "type": "boolean" },
+        "valueType": { "$ref": "#/$defs/valueType" },
+        "allowedValues": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "recursive": { "type": "boolean" },
+        "default": true
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1",
+  "tool": {
+    "name": "demo",
+    "version": "0.0.0"
+  },
+  "formatShorthands": {
+    "-fj": "--format=json"
+  },
+  "advisoryOutput": {
+    "description": "The update notice is advisory only and never appears on a machine-readable stream.",
+    "stream": "stderr",
+    "suppressedWhen": ["DEMO_NO_NOTICE=1", "CI is set"],
+    "optOutEnv": "DEMO_NO_NOTICE"
+  },
+  "schemas": [
+    {
+      "id": "run-result",
+      "uri": "https://example.invalid/run-result.json",
+      "title": "Run result",
+      "commands": ["run"]
+    }
+  ],
+  "commands": [
+    {
+      "id": "run",
+      "path": ["run"],
+      "description": "Run a script",
+      "usage": "demo run [options] <script> [args...]",
+      "arguments": [
+        {
+          "name": "script",
+          "description": "Script to run",
+          "arity": { "min": 1, "max": 1 },
+          "valueType": "string",
+          "allowedValues": null
+        },
+        {
+          "name": "args",
+          "description": "Arguments forwarded to the script",
+          "arity": { "min": 0, "max": null },
+          "valueType": "string",
+          "allowedValues": null
+        }
+      ],
+      "options": [
+        {
+          "name": "--output",
+          "aliases": ["-o"],
+          "description": "Write a report here",
+          "valueName": "path",
+          "arity": { "min": 1, "max": 1 },
+          "required": false,
+          "negatable": false,
+          "valueType": "string",
+          "allowedValues": null,
+          "recursive": false
+        }
+      ],
+      "subcommands": [],
+      "formats": ["llm", "human", "json"],
+      "defaultFormat": "llm",
+      "formatConfigurable": true,
+      "outputSchema": "run-result",
+      "jsonlSchema": "run-record",
+      "sarifSchema": "https://json.schemastore.org/sarif-2.1.0.json",
+      "exitCodes": [
+        { "code": 0, "meaning": "Success" },
+        { "code": 1, "meaning": "Invocation error" },
+        { "code": 2, "meaning": "Findings" }
+      ],
+      "exitCodePassthrough": {
+        "min": 0,
+        "max": 255,
+        "description": "Forwards the child process exit status."
+      },
+      "stream": {
+        "success": "stdout",
+        "findings": "stderr"
+      },
+      "writes": true,
+      "stability": "stable",
+      "notes": "Writes a report to --output when set."
+    },
+    {
+      "id": "group",
+      "path": ["group"],
+      "description": "A group of commands",
+      "usage": "demo group",
+      "arguments": [],
+      "options": [],
+      "subcommands": ["group leaf"],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "group leaf",
+      "path": ["group", "leaf"],
+      "description": "A leaf under an undeclared group",
+      "usage": "demo group leaf",
+      "arguments": [],
+      "options": [],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    }
+  ]
+}

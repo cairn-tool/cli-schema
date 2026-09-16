@@ -1,0 +1,54 @@
+{
+  "name": "cli-schema",
+  "private": true,
+  "type": "module",
+  "description": "Portable CLI-description specification and emitters for commander.js and System.CommandLine",
+  "license": "MIT",
+  "author": "Bryan Stockus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cairn-tool/cli-schema.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cairn-tool/cli-schema/issues"
+  },
+  "homepage": "https://github.com/cairn-tool/cli-schema#readme",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @cairn-tool/cli-schema && npm run build -w @cairn-tool/cli-schema-commander",
+    "clean": "npm run clean -w @cairn-tool/cli-schema && npm run clean -w @cairn-tool/cli-schema-commander",
+    "typecheck": "npm run typecheck -w @cairn-tool/cli-schema && npm run build -w @cairn-tool/cli-schema && npm run typecheck -w @cairn-tool/cli-schema-commander",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:csharp": "dotnet format dotnet/CliSchema.slnx",
+    "format:csharp:check": "dotnet format dotnet/CliSchema.slnx --verify-no-changes --severity error",
+    "test": "npm test -w @cairn-tool/cli-schema && npm test -w @cairn-tool/cli-schema-commander",
+    "test:watch": "npm run test:watch -w @cairn-tool/cli-schema-commander",
+    "conformance": "node scripts/conformance.mjs",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^11.0.1",
+    "@semantic-release/npm": "^13.1.1",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "prettier": "^3.4.0",
+    "semantic-release": "^25.0.9",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.68.0"
+  }
+}

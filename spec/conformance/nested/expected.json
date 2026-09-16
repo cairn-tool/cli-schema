@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1",
+  "tool": {
+    "name": "demo",
+    "version": "0.0.0"
+  },
+  "formatShorthands": {},
+  "schemas": [],
+  "commands": [
+    {
+      "id": "alpha",
+      "path": ["alpha"],
+      "description": "First level",
+      "usage": "demo alpha [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--global",
+          "aliases": [],
+          "description": "Applies to subcommands",
+          "valueName": "value",
+          "arity": { "min": 1, "max": 1 },
+          "required": false,
+          "negatable": false,
+          "valueType": "string",
+          "allowedValues": null,
+          "recursive": true
+        }
+      ],
+      "subcommands": ["alpha beta"],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "alpha beta",
+      "path": ["alpha", "beta"],
+      "description": "Second level",
+      "usage": "demo alpha beta",
+      "arguments": [],
+      "options": [],
+      "subcommands": ["alpha beta gamma"],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    },
+    {
+      "id": "alpha beta gamma",
+      "path": ["alpha", "beta", "gamma"],
+      "description": "Third level",
+      "usage": "demo alpha beta gamma [options]",
+      "arguments": [],
+      "options": [
+        {
+          "name": "--local",
+          "aliases": [],
+          "description": "Only on gamma",
+          "valueName": "value",
+          "arity": { "min": 1, "max": 1 },
+          "required": false,
+          "negatable": false,
+          "valueType": "string",
+          "allowedValues": null,
+          "recursive": false
+        }
+      ],
+      "subcommands": [],
+      "formats": null,
+      "defaultFormat": null,
+      "formatConfigurable": false,
+      "outputSchema": null,
+      "exitCodes": [],
+      "stream": null,
+      "writes": null,
+      "stability": "undeclared"
+    }
+  ]
+}
