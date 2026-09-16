@@ -1,4 +1,4 @@
-namespace Cairn.CliSchema;
+namespace CairnTool.CliSchema;
 
 /// <summary>
 /// Spec-defined usage string. A pure function of the rest of the command, so two

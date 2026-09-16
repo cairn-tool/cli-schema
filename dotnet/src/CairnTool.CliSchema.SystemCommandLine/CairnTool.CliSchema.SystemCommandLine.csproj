@@ -4,20 +4,20 @@
     <IsAotCompatible>true</IsAotCompatible>
     <IsTrimmable>true</IsTrimmable>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
-    <PackageId>Cairn.CliSchema</PackageId>
+    <PackageId>CairnTool.CliSchema.SystemCommandLine</PackageId>
     <Authors>Bryan Stockus</Authors>
-    <Description>Portable CLI-description model, JSON Schema, usage builder, and text renderer.</Description>
+    <Description>System.CommandLine emitter for the portable CLI-description schema.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/cairn-tool/cli-schema</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cairn-tool/cli-schema</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>cli;schema;describe</PackageTags>
+    <PackageTags>cli;system-commandline;schema;describe</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\..\spec\v1\cli-schema.json" Link="cli-schema.json" LogicalName="Cairn.CliSchema.cli-schema.json" />
+    <PackageReference Include="System.CommandLine" />
+    <ProjectReference Include="..\CairnTool.CliSchema\CairnTool.CliSchema.csproj" />
     <None Include="README.md" Pack="true" PackagePath="/" />
-    <Content Include="..\..\..\spec\v1\cli-schema.json" Pack="true" PackagePath="content/cli-schema.json" />
   </ItemGroup>
 </Project>

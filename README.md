@@ -2,9 +2,9 @@
 
 A portable description of a command-line interface, plus emitters that produce the same payload from a live command tree.
 
-The **model packages** (`@cairn-tool/cli-schema`, `Cairn.CliSchema`) hold the types, JSON Schema, `buildUsage` / `UsageBuilder`, `renderText` / `TextRenderer`, and a validator. They have **no** commander or System.CommandLine dependency.
+The **model packages** (`@cairn-tool/cli-schema`, `CairnTool.CliSchema`) hold the types, JSON Schema, `buildUsage` / `UsageBuilder`, `renderText` / `TextRenderer`, and a validator. They have **no** commander or System.CommandLine dependency.
 
-The **emitter packages** (`@cairn-tool/cli-schema-commander`, `Cairn.CliSchema.SystemCommandLine`) walk a live CLI and depend on the matching framework plus the model package.
+The **emitter packages** (`@cairn-tool/cli-schema-commander`, `CairnTool.CliSchema.SystemCommandLine`) walk a live CLI and depend on the matching framework plus the model package.
 
 The specification is [`spec/README.md`](spec/README.md). The JSON Schema is [`spec/v1/cli-schema.json`](spec/v1/cli-schema.json). Both emitters are held in agreement by the goldens under [`spec/conformance/`](spec/conformance/).
 
@@ -17,7 +17,7 @@ npm install @cairn-tool/cli-schema
 ```
 
 ```xml
-<PackageReference Include="Cairn.CliSchema" Version="1.0.0" />
+<PackageReference Include="CairnTool.CliSchema" Version="1.0.0" />
 ```
 
 commander.js emitter (brings the model package with it):
@@ -26,10 +26,10 @@ commander.js emitter (brings the model package with it):
 npm install @cairn-tool/cli-schema-commander
 ```
 
-System.CommandLine emitter (brings `Cairn.CliSchema` with it; depends on System.CommandLine `[2.0.12,3.0.0)`):
+System.CommandLine emitter (brings `CairnTool.CliSchema` with it; depends on System.CommandLine `[2.0.12,3.0.0)`):
 
 ```xml
-<PackageReference Include="Cairn.CliSchema.SystemCommandLine" Version="1.0.0" />
+<PackageReference Include="CairnTool.CliSchema.SystemCommandLine" Version="1.0.0" />
 ```
 
 ## Models
@@ -39,7 +39,7 @@ import { validate, cliSchema, buildUsage, renderText } from "@cairn-tool/cli-sch
 ```
 
 ```csharp
-using Cairn.CliSchema;
+using CairnTool.CliSchema;
 
 var document = Schema.Json;          // JSON Schema 2020-12
 var version = Schema.Version;        // "1"
@@ -87,8 +87,8 @@ Unknown `--format` values are a hard error, not a silent substitution. A command
 
 ```csharp
 using System.CommandLine;
-using Cairn.CliSchema;
-using Cairn.CliSchema.SystemCommandLine;
+using CairnTool.CliSchema;
+using CairnTool.CliSchema.SystemCommandLine;
 
 var root = new RootCommand("Kitchen Production System CLI");
 root

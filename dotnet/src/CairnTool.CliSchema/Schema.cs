@@ -1,4 +1,4 @@
-namespace Cairn.CliSchema;
+namespace CairnTool.CliSchema;
 
 /// <summary>
 /// Hand-owned schema version and the JSON Schema 2020-12 document.
@@ -11,7 +11,7 @@ public static class Schema {
     public static string Json {
         get {
             var assembly = typeof(Schema).Assembly;
-            using var stream = assembly.GetManifestResourceStream("Cairn.CliSchema.cli-schema.json")
+            using var stream = assembly.GetManifestResourceStream("CairnTool.CliSchema.cli-schema.json")
                 ?? throw new InvalidOperationException("Embedded cli-schema.json is missing.");
             using var reader = new StreamReader(stream);
             return reader.ReadToEnd();

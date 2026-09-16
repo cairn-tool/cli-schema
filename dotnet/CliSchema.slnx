@@ -1,11 +1,11 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Cairn.CliSchema/Cairn.CliSchema.csproj" />
-    <Project Path="src/Cairn.CliSchema.SystemCommandLine/Cairn.CliSchema.SystemCommandLine.csproj" />
+    <Project Path="src/CairnTool.CliSchema/CairnTool.CliSchema.csproj" />
+    <Project Path="src/CairnTool.CliSchema.SystemCommandLine/CairnTool.CliSchema.SystemCommandLine.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Cairn.CliSchema.Tests/Cairn.CliSchema.Tests.csproj" />
-    <Project Path="tests/Cairn.CliSchema.SystemCommandLine.Tests/Cairn.CliSchema.SystemCommandLine.Tests.csproj" />
+    <Project Path="tests/CairnTool.CliSchema.Tests/CairnTool.CliSchema.Tests.csproj" />
+    <Project Path="tests/CairnTool.CliSchema.SystemCommandLine.Tests/CairnTool.CliSchema.SystemCommandLine.Tests.csproj" />
   </Folder>
   <Folder Name="/_SolutionFolder/">
     <File Path="Directory.Build.props" />

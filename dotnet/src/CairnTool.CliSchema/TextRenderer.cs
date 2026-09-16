@@ -1,4 +1,4 @@
-namespace Cairn.CliSchema;
+namespace CairnTool.CliSchema;
 
 public static class TextRenderer {
     private const string Bold = "\u001b[1m";

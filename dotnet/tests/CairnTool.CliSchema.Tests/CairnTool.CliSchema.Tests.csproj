@@ -15,7 +15,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Cairn.CliSchema\Cairn.CliSchema.csproj" />
+    <ProjectReference Include="..\..\src\CairnTool.CliSchema\CairnTool.CliSchema.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />

@@ -1,4 +1,4 @@
-namespace Cairn.CliSchema;
+namespace CairnTool.CliSchema;
 
 public sealed class ContractRegistry {
     private readonly Dictionary<string, CommandContract> _entries = new(StringComparer.Ordinal);

@@ -1,4 +1,4 @@
-namespace Cairn.CliSchema.SystemCommandLine;
+namespace CairnTool.CliSchema.SystemCommandLine;
 
 internal static class ValueTypes {
     public static string? From(Type type, out IReadOnlyList<string>? allowed) {

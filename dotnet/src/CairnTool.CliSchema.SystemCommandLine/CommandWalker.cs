@@ -2,13 +2,13 @@ using System.CommandLine;
 using System.CommandLine.Help;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Cairn.CliSchema;
+using CairnTool.CliSchema;
 
-namespace Cairn.CliSchema.SystemCommandLine;
+namespace CairnTool.CliSchema.SystemCommandLine;
 
 /// <summary>
 /// Walks a System.CommandLine tree for the mechanical facts and merges a
-/// <see cref="Cairn.CliSchema.ContractRegistry"/> for the semantic ones the
+/// <see cref="CairnTool.CliSchema.ContractRegistry"/> for the semantic ones the
 /// framework cannot know. A command with no registry entry is <c>undeclared</c>
 /// rather than an error.
 /// </summary>

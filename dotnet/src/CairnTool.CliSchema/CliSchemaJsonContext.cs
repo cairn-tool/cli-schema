@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Cairn.CliSchema;
+namespace CairnTool.CliSchema;
 
 [JsonSourceGenerationOptions(
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,

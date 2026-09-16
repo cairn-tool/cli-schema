@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-namespace Cairn.CliSchema.Tests;
+namespace CairnTool.CliSchema.Tests;
 
 public class SchemaTests {
     [Fact]

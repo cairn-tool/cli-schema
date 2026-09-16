@@ -1,6 +1,6 @@
-using Cairn.CliSchema;
+using CairnTool.CliSchema;
 
-namespace Cairn.CliSchema.SystemCommandLine;
+namespace CairnTool.CliSchema.SystemCommandLine;
 
 public sealed class DescribeCommandOptions {
     public string? ToolName { get; init; }

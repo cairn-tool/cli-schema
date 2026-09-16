@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Cairn.CliSchema;
-using Cairn.CliSchema.SystemCommandLine;
+using CairnTool.CliSchema;
+using CairnTool.CliSchema.SystemCommandLine;
 
-namespace Cairn.CliSchema.SystemCommandLine.Tests;
+namespace CairnTool.CliSchema.SystemCommandLine.Tests;
 
 public class ConformanceTests {
     [Fact]

@@ -1,8 +1,8 @@
 using System.CommandLine;
 using System.Text.Json;
-using Cairn.CliSchema;
+using CairnTool.CliSchema;
 
-namespace Cairn.CliSchema.SystemCommandLine;
+namespace CairnTool.CliSchema.SystemCommandLine;
 
 public static class DescribeCommandExtensions {
     public static readonly string[] Formats = ["llm", "human", "json"];
