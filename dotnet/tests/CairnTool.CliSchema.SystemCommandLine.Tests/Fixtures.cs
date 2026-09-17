@@ -129,7 +129,7 @@ internal static class Fixtures {
                 new ExitCodeMeaning(1, "Invocation error"),
                 new ExitCodeMeaning(2, "Findings"),
             ],
-            Stream: new CommandStream("stdout", "stderr"),
+            Stream: new CommandStream("stdout") { Findings = "stderr" },
             Writes: true,
             Stability: "stable") {
             JsonlSchema = "run-record",

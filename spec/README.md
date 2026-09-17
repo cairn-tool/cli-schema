@@ -18,6 +18,17 @@ It is an identifier, not a fetchable URL. `schemaVersion` is `"1"`. It versions 
 
 `describe` reports the **static** contract. The answer must not depend on the working directory, project configuration, or runtime environment. A consumer running the same binary twice gets the same description.
 
+## A correction to `stream`, after 1.0.0
+
+`$defs.command.stream` originally declared no `required` list, so a `stream` object with no
+`success` validated — while the published model in both languages has required `success` since
+1.0.0. The schema was looser than the thing it describes.
+
+`required: ["success"]` has been added. **This is the one change to the schema that is not purely
+additive**, and it is recorded here rather than folded in silently. No emitter has ever produced
+such an object, and no model has ever accepted one, so nothing that validated in practice stops
+validating; `schemaVersion` stays `"1"` on that basis.
+
 ## Unknown properties
 
 No schema in this specification sets `additionalProperties: false`. Consumers **must** ignore properties they do not recognize. Adding a property is a non-breaking change.
@@ -44,31 +55,55 @@ No schema in this specification sets `additionalProperties: false`. Consumers **
 
 ## Command
 
-| Field                 | Required | Notes                                                                                    |
-| --------------------- | -------- | ---------------------------------------------------------------------------------------- |
-| `id`                  | yes      | Space-joined path, e.g. `"md graph"`.                                                    |
-| `path`                | yes      | Path segments.                                                                           |
-| `description`         | yes      |                                                                                          |
-| `usage`               | yes      | Spec-defined; see [Usage](#usage).                                                       |
-| `arguments`           | yes      |                                                                                          |
-| `options`             | yes      | Locally registered, non-hidden options. Framework help and version options are excluded. |
-| `subcommands`         | yes      | Visible child ids. Hidden commands and the implicit `help` subcommand are excluded.      |
-| `formats`             | yes      | Accepted `--format` values, or `null` when the command has no output format.             |
-| `defaultFormat`       | yes      | Built-in default, or `null`.                                                             |
-| `formatConfigurable`  | yes      | Whether project configuration may override the format.                                   |
-| `outputSchema`        | yes      | Schema id for `--format json`, or `null`.                                                |
-| `jsonlSchema`         | no       | Schema id for `--format jsonl`.                                                          |
-| `sarifSchema`         | no       | Schema URI for `--format sarif`.                                                         |
-| `exitCodes`           | yes      | Integer codes this tool decides itself. Empty when undeclared.                           |
-| `exitCodePassthrough` | no       | Present only when a child process's status is forwarded verbatim.                        |
-| `stream`              | yes      | `{ success, findings? }` or `null` when undeclared.                                      |
-| `writes`              | yes      | Whether the command may modify files, or `null` when undeclared.                         |
-| `stability`           | yes      | `"stable"`, `"experimental"`, or `"undeclared"`.                                         |
-| `notes`               | no       | Behavior a consumer would otherwise be surprised by.                                     |
+| Field                 | Required | Notes                                                                                                 |
+| --------------------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| `id`                  | yes      | Space-joined path, e.g. `"md graph"`.                                                                 |
+| `path`                | yes      | Path segments.                                                                                        |
+| `description`         | yes      |                                                                                                       |
+| `usage`               | yes      | Spec-defined; see [Usage](#usage).                                                                    |
+| `arguments`           | yes      |                                                                                                       |
+| `options`             | yes      | Locally registered, non-hidden options. Framework help and version options are excluded.              |
+| `subcommands`         | yes      | Visible child ids. Hidden commands and the implicit `help` subcommand are excluded.                   |
+| `formats`             | yes      | Accepted `--format` values, or `null` when the command has no output format.                          |
+| `defaultFormat`       | yes      | Built-in default, or `null`.                                                                          |
+| `formatConfigurable`  | yes      | Whether project configuration may override the format.                                                |
+| `outputSchema`        | yes      | Schema id for `--format json`, or `null`.                                                             |
+| `jsonlSchema`         | no       | Schema id for `--format jsonl`.                                                                       |
+| `sarifSchema`         | no       | Schema URI for `--format sarif`.                                                                      |
+| `exitCodes`           | yes      | Integer codes this tool decides itself. Empty when undeclared.                                        |
+| `exitCodePassthrough` | no       | Present only when a child process's status is forwarded verbatim.                                     |
+| `stream`              | yes      | `{ success, findings? }` or `null` when undeclared. `success` is required when the object is present. |
+| `writes`              | yes      | Whether the command may modify files, or `null` when undeclared.                                      |
+| `stability`           | yes      | `"stable"`, `"experimental"`, or `"undeclared"`.                                                      |
+| `notes`               | no       | Behavior a consumer would otherwise be surprised by.                                                  |
 
 A command with no registry entry is **undeclared**, not an error: `stability` is `"undeclared"`, `formats` / `defaultFormat` / `outputSchema` / `stream` / `writes` are `null`, `formatConfigurable` is `false`, `exitCodes` is `[]`. A missing row must not crash a user.
 
 `exitCodes[].code` is an integer. 0/1/2 is a house rule some tools adopt; it is not required.
+
+## Command contract
+
+`$defs.commandContract` is what a **host declares** about one command: the facts a CLI framework
+cannot know. The framework supplies the command tree, the options and their arity; everything in
+the contract has to be stated. An emitter merges the two to produce a `command`.
+
+It is the same members as a command minus the mechanical ones — no `id`, `path`, `description`,
+`usage`, `arguments`, `options` or `subcommands`, because an emitter reads those rather than being
+told them.
+
+One member is deliberately narrower than its counterpart on a command:
+
+|           | `command.stability`                    | `commandContract.stability` |
+| --------- | -------------------------------------- | --------------------------- |
+| Permitted | `stable`, `experimental`, `undeclared` | `stable`, `experimental`    |
+
+`undeclared` is what an emitter assigns to a command with **no** contract, so it is never a value a
+host writes. A command with no registry row is emitted as `undeclared` rather than rejected: a
+missing row is a visible gap, not a crash.
+
+**This definition was added after 1.0.0 and is additive** — nothing previously valid became
+invalid, so `schemaVersion` stays `"1"`. It exists so the contract type can be generated in both
+languages from the same source as the payload types, rather than hand-written twice.
 
 ## Option
 

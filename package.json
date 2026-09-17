@@ -22,6 +22,8 @@
   "scripts": {
     "build": "npm run build -w @cairn-tool/cli-schema && npm run build -w @cairn-tool/cli-schema-commander",
     "clean": "npm run clean -w @cairn-tool/cli-schema && npm run clean -w @cairn-tool/cli-schema-commander",
+    "codegen": "node scripts/codegen.mjs",
+    "codegen:check": "node scripts/codegen.mjs --check",
     "typecheck": "npm run typecheck -w @cairn-tool/cli-schema && npm run build -w @cairn-tool/cli-schema && npm run typecheck -w @cairn-tool/cli-schema-commander",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -46,6 +48,7 @@
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
+    "json-schema-to-typescript": "^16.0.0",
     "prettier": "^3.4.0",
     "semantic-release": "^25.0.9",
     "typescript": "^5.7.0",

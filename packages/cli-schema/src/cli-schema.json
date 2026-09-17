@@ -6,56 +6,98 @@
   "type": "object",
   "required": ["schemaVersion", "tool", "formatShorthands", "schemas", "commands"],
   "properties": {
-    "schemaVersion": { "type": "string" },
+    "schemaVersion": {
+      "type": "string"
+    },
     "tool": {
+      "title": "ToolInfo",
       "type": "object",
       "required": ["name", "version"],
       "properties": {
-        "name": { "type": "string" },
-        "version": { "type": "string" }
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
       }
     },
     "formatShorthands": {
       "type": "object",
-      "additionalProperties": { "type": "string" },
+      "additionalProperties": {
+        "type": "string"
+      },
       "description": "argv token to the --format value it expands to before parsing."
     },
     "advisoryOutput": {
+      "title": "AdvisoryOutput",
       "type": "object",
       "description": "Machine-stream guarantees for an advisory notice. Omitted when the tool has none.",
       "required": ["description", "stream", "suppressedWhen", "optOutEnv"],
       "properties": {
-        "description": { "type": "string" },
-        "stream": { "enum": ["stdout", "stderr"] },
-        "suppressedWhen": { "type": "array", "items": { "type": "string" } },
-        "optOutEnv": { "type": "string" }
+        "description": {
+          "type": "string"
+        },
+        "stream": {
+          "enum": ["stdout", "stderr"]
+        },
+        "suppressedWhen": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optOutEnv": {
+          "type": "string"
+        }
       }
     },
     "schemas": {
       "type": "array",
       "items": {
+        "title": "SchemaRef",
         "type": "object",
         "required": ["id", "uri", "title", "commands"],
         "properties": {
-          "id": { "type": "string" },
-          "uri": { "type": "string" },
-          "title": { "type": "string" },
-          "commands": { "type": "array", "items": { "type": "string" } }
+          "id": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
       }
     },
     "commands": {
       "type": "array",
-      "items": { "$ref": "#/$defs/command" }
+      "items": {
+        "$ref": "#/$defs/command"
+      }
     }
   },
   "$defs": {
     "arity": {
+      "title": "Arity",
       "type": "object",
       "required": ["min", "max"],
       "properties": {
-        "min": { "type": "integer", "minimum": 0 },
-        "max": { "type": ["integer", "null"], "minimum": 0 }
+        "min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        }
       }
     },
     "valueType": {
@@ -63,6 +105,7 @@
       "enum": ["boolean", "string", "integer", "number", null]
     },
     "command": {
+      "title": "DescribedCommand",
       "type": "object",
       "required": [
         "id",
@@ -86,73 +129,236 @@
           "type": "string",
           "description": "Space-joined command path, e.g. 'md graph'."
         },
-        "path": { "type": "array", "items": { "type": "string" } },
-        "description": { "type": "string" },
-        "usage": { "type": "string" },
+        "path": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "usage": {
+          "type": "string"
+        },
         "arguments": {
           "type": "array",
-          "items": { "$ref": "#/$defs/argument" }
+          "items": {
+            "$ref": "#/$defs/argument"
+          }
         },
         "options": {
           "type": "array",
-          "items": { "$ref": "#/$defs/option" }
+          "items": {
+            "$ref": "#/$defs/option"
+          }
         },
-        "subcommands": { "type": "array", "items": { "type": "string" } },
-        "formats": { "type": ["array", "null"], "items": { "type": "string" } },
-        "defaultFormat": { "type": ["string", "null"] },
-        "formatConfigurable": { "type": "boolean" },
-        "outputSchema": { "type": ["string", "null"] },
-        "jsonlSchema": { "type": ["string", "null"] },
-        "sarifSchema": { "type": ["string", "null"] },
+        "subcommands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "formats": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultFormat": {
+          "type": ["string", "null"]
+        },
+        "formatConfigurable": {
+          "type": "boolean"
+        },
+        "outputSchema": {
+          "type": ["string", "null"]
+        },
+        "jsonlSchema": {
+          "type": ["string", "null"]
+        },
+        "sarifSchema": {
+          "type": ["string", "null"]
+        },
         "exitCodes": {
           "type": "array",
           "items": {
+            "title": "ExitCodeMeaning",
             "type": "object",
             "required": ["code", "meaning"],
             "properties": {
-              "code": { "type": "integer" },
-              "meaning": { "type": "string" }
+              "code": {
+                "type": "integer"
+              },
+              "meaning": {
+                "type": "string"
+              }
             }
           }
         },
         "exitCodePassthrough": {
+          "title": "ExitCodePassthrough",
           "type": "object",
           "description": "Present only when the command forwards a child process's exit status verbatim.",
           "required": ["min", "max", "description"],
           "properties": {
-            "min": { "type": "integer" },
-            "max": { "type": "integer" },
-            "description": { "type": "string" }
+            "min": {
+              "type": "integer"
+            },
+            "max": {
+              "type": "integer"
+            },
+            "description": {
+              "type": "string"
+            }
           }
         },
         "stream": {
+          "title": "CommandStream",
           "type": ["object", "null"],
+          "required": ["success"],
           "properties": {
-            "success": { "enum": ["stdout", "stderr"] },
-            "findings": { "enum": ["stdout", "stderr"] }
+            "success": {
+              "enum": ["stdout", "stderr"]
+            },
+            "findings": {
+              "enum": ["stdout", "stderr"]
+            }
           }
         },
-        "writes": { "type": ["boolean", "null"] },
-        "stability": { "enum": ["stable", "experimental", "undeclared"] },
-        "notes": { "type": "string" }
+        "writes": {
+          "type": ["boolean", "null"]
+        },
+        "stability": {
+          "enum": ["stable", "experimental", "undeclared"]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "commandContract": {
+      "title": "CommandContract",
+      "type": "object",
+      "description": "What a host declares about one command: the facts a CLI framework cannot know. A framework supplies the command tree, the options and their arity; everything here has to be stated. An emitter merges this with what it walked to produce a `command`. A command with no contract is emitted with `stability: \"undeclared\"` rather than rejected, so a missing row is a visible gap and not a crash.",
+      "required": [
+        "formats",
+        "defaultFormat",
+        "formatConfigurable",
+        "outputSchema",
+        "exitCodes",
+        "stream",
+        "writes",
+        "stability"
+      ],
+      "properties": {
+        "formats": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultFormat": {
+          "type": ["string", "null"]
+        },
+        "formatConfigurable": {
+          "type": "boolean"
+        },
+        "outputSchema": {
+          "type": ["string", "null"]
+        },
+        "jsonlSchema": {
+          "type": ["string", "null"]
+        },
+        "sarifSchema": {
+          "type": ["string", "null"]
+        },
+        "exitCodes": {
+          "type": "array",
+          "items": {
+            "title": "ExitCodeMeaning",
+            "type": "object",
+            "required": ["code", "meaning"],
+            "properties": {
+              "code": {
+                "type": "integer"
+              },
+              "meaning": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "exitCodePassthrough": {
+          "title": "ExitCodePassthrough",
+          "type": "object",
+          "description": "Present only when the command forwards a child process's exit status verbatim.",
+          "required": ["min", "max", "description"],
+          "properties": {
+            "min": {
+              "type": "integer"
+            },
+            "max": {
+              "type": "integer"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        },
+        "stream": {
+          "title": "CommandStream",
+          "type": ["object", "null"],
+          "required": ["success"],
+          "properties": {
+            "success": {
+              "enum": ["stdout", "stderr"]
+            },
+            "findings": {
+              "enum": ["stdout", "stderr"]
+            }
+          }
+        },
+        "writes": {
+          "type": ["boolean", "null"]
+        },
+        "stability": {
+          "enum": ["stable", "experimental"],
+          "description": "Deliberately narrower than a command's. `undeclared` is what an emitter assigns to a command with no contract, so it is never a value a host declares."
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     },
     "argument": {
+      "title": "DescribedArgument",
       "type": "object",
       "required": ["name", "description", "arity", "valueType", "allowedValues"],
       "properties": {
-        "name": { "type": "string" },
-        "description": { "type": "string" },
-        "arity": { "$ref": "#/$defs/arity" },
-        "valueType": { "$ref": "#/$defs/valueType" },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "arity": {
+          "$ref": "#/$defs/arity"
+        },
+        "valueType": {
+          "$ref": "#/$defs/valueType"
+        },
         "allowedValues": {
           "type": ["array", "null"],
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "default": true
       }
     },
     "option": {
+      "title": "DescribedOption",
       "type": "object",
       "required": [
         "name",
@@ -167,19 +373,42 @@
         "recursive"
       ],
       "properties": {
-        "name": { "type": "string" },
-        "aliases": { "type": "array", "items": { "type": "string" } },
-        "description": { "type": "string" },
-        "valueName": { "type": ["string", "null"] },
-        "arity": { "$ref": "#/$defs/arity" },
-        "required": { "type": "boolean" },
-        "negatable": { "type": "boolean" },
-        "valueType": { "$ref": "#/$defs/valueType" },
+        "name": {
+          "type": "string"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "valueName": {
+          "type": ["string", "null"]
+        },
+        "arity": {
+          "$ref": "#/$defs/arity"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "negatable": {
+          "type": "boolean"
+        },
+        "valueType": {
+          "$ref": "#/$defs/valueType"
+        },
         "allowedValues": {
           "type": ["array", "null"],
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "recursive": { "type": "boolean" },
+        "recursive": {
+          "type": "boolean"
+        },
         "default": true
       }
     }
