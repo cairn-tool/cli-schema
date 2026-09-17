@@ -24,8 +24,7 @@ namespace CairnTool.CliSchema;
         ToolInfo Tool,
         IReadOnlyDictionary<string, string> FormatShorthands,
         IReadOnlyList<SchemaRef> Schemas,
-        IReadOnlyList<DescribedCommand> Commands)
-    {
+        IReadOnlyList<DescribedCommand> Commands) {
         /// <summary>
         /// Machine-stream guarantees for an advisory notice. Omitted when the tool has none.
         /// </summary>
@@ -36,9 +35,7 @@ namespace CairnTool.CliSchema;
 
     public sealed record ToolInfo(
         string Name,
-        string Version)
-    {
-    }
+        string Version);
 
     /// <summary>
     /// Machine-stream guarantees for an advisory notice. Omitted when the tool has none.
@@ -47,23 +44,17 @@ namespace CairnTool.CliSchema;
         string Description,
         string Stream,
         IReadOnlyList<string> SuppressedWhen,
-        string OptOutEnv)
-    {
-    }
+        string OptOutEnv);
 
     public sealed record SchemaRef(
         string Id,
         string Uri,
         string Title,
-        IReadOnlyList<string> Commands)
-    {
-    }
+        IReadOnlyList<string> Commands);
 
     public sealed record Arity(
         int Min,
-        int? Max)
-    {
-    }
+        int? Max);
 
     public sealed record DescribedCommand(
         string Id,
@@ -80,8 +71,7 @@ namespace CairnTool.CliSchema;
         IReadOnlyList<ExitCodeMeaning> ExitCodes,
         CommandStream? Stream,
         bool? Writes,
-        string Stability)
-    {
+        string Stability) {
         [JsonPropertyName("jsonlSchema")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? JsonlSchema { get; init; }
@@ -104,9 +94,7 @@ namespace CairnTool.CliSchema;
 
     public sealed record ExitCodeMeaning(
         int Code,
-        string Meaning)
-    {
-    }
+        string Meaning);
 
     /// <summary>
     /// Present only when the command forwards a child process's exit status verbatim.
@@ -114,13 +102,10 @@ namespace CairnTool.CliSchema;
     public sealed record ExitCodePassthrough(
         int Min,
         int Max,
-        string Description)
-    {
-    }
+        string Description);
 
     public sealed record CommandStream(
-        string Success)
-    {
+        string Success) {
         /// <summary>
         /// Permitted values: stdout, stderr.
         /// </summary>
@@ -144,8 +129,7 @@ namespace CairnTool.CliSchema;
         IReadOnlyList<ExitCodeMeaning> ExitCodes,
         CommandStream? Stream,
         bool? Writes,
-        string Stability)
-    {
+        string Stability) {
         [JsonPropertyName("jsonlSchema")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? JsonlSchema { get; init; }
@@ -171,8 +155,7 @@ namespace CairnTool.CliSchema;
         string Description,
         Arity Arity,
         string? ValueType,
-        IReadOnlyList<string>? AllowedValues)
-    {
+        IReadOnlyList<string>? AllowedValues) {
         [JsonPropertyName("default")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public object? @Default { get; init; }
@@ -188,8 +171,7 @@ namespace CairnTool.CliSchema;
         bool Negatable,
         string? ValueType,
         IReadOnlyList<string>? AllowedValues,
-        bool Recursive)
-    {
+        bool Recursive) {
         [JsonPropertyName("default")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public object? @Default { get; init; }

@@ -191,9 +191,9 @@ function emitRecord(name, node, schema, style) {
         return `${type} ${parameter}${isRequired ? "" : " = null"}`;
       })
       .join(",\n        ");
-    out.push(`    public sealed record ${name}(\n        ${list})\n    {\n`);
+    out.push(`    public sealed record ${name}(\n        ${list}) {\n`);
   } else {
-    out.push(`    public sealed record ${name}\n    {\n`);
+    out.push(`    public sealed record ${name} {\n`);
   }
 
   const emitted = positional ? entries.filter(([key]) => !required.has(key)) : entries;
@@ -227,7 +227,9 @@ function emitRecord(name, node, schema, style) {
   });
 
   out.push("    }\n");
-  return out.join("");
+
+  const rendered = out.join("");
+  return rendered.replace(/ \{\n {4}\}\n$/, ";\n");
 }
 
 export function emitCSharp({ schema, rootName, namespace, contextName, style = "init" }) {
