@@ -52,6 +52,12 @@ jobs:
       - name: TypeScript
         run: npm run typecheck
 
+      # The model types in both languages are generated from spec/v1/cli-schema.json. A spec edited
+      # without regenerating leaves the published types describing a payload shape that no longer
+      # exists -- and these packages are consumed by other people's builds.
+      - name: Check the generated sources are current
+        run: npm run codegen:check
+
       - name: C# format (K&R braces)
         run: dotnet format dotnet/CliSchema.slnx --verify-no-changes --severity error
 

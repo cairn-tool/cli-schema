@@ -1,4 +1,12 @@
 <Project>
+  <!-- One build-output tree at dotnet/.artifacts instead of a bin/ and obj/ beside every project.
+       The condition is defensive: an importing solution can still redirect the whole build to a
+       shared output tree. -->
+  <PropertyGroup Condition=" '$(ArtifactsPath)' == '' ">
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(MSBuildThisFileDirectory).artifacts</ArtifactsPath>
+  </PropertyGroup>
+
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>

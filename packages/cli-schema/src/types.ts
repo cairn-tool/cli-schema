@@ -1,104 +1,45 @@
+/**
+ * The public model surface.
+ *
+ * Every shape is generated from `spec/v1/cli-schema.json` and re-exported here. What stays
+ * hand-written is what the spec does not describe as a shape: the contract version, the three
+ * string-union aliases the payload uses at its leaves, the registry map a host builds, and two
+ * predicates over arity.
+ */
+export type {
+  Arity,
+  AdvisoryOutput,
+  CommandContract,
+  CommandStream,
+  DescribeResult,
+  DescribedArgument,
+  DescribedCommand,
+  DescribedOption,
+  ExitCodeMeaning,
+  ExitCodePassthrough,
+  SchemaRef,
+  ToolInfo,
+} from "./generated/types.js";
+
+import type { Arity, CommandContract } from "./generated/types.js";
+
+/** Hand-owned, and independent of the npm and NuGet package versions. */
 export const CONTRACT_VERSION = "1";
 
+/**
+ * The three leaf unions.
+ *
+ * Kept by hand rather than taken from the generated file because the generated `ValueType` folds
+ * `null` into the union, where the published one has always been the non-null set with nullability
+ * expressed at each use site. Changing that would be a breaking change to a published package for
+ * no gain.
+ */
 export type ContractStream = "stdout" | "stderr";
 export type ValueType = "boolean" | "string" | "integer" | "number";
 export type Stability = "stable" | "experimental" | "undeclared";
 
-export interface Arity {
-  min: number;
-  /** `null` is unbounded. */
-  max: number | null;
-}
-
-export interface ExitCodeMeaning {
-  code: number;
-  meaning: string;
-}
-
-export interface AdvisoryOutput {
-  description: string;
-  stream: ContractStream;
-  suppressedWhen: string[];
-  optOutEnv: string;
-}
-
-export interface SchemaRef {
-  id: string;
-  uri: string;
-  title: string;
-  commands: string[];
-}
-
-export interface CommandContract {
-  formats: readonly string[] | null;
-  defaultFormat: string | null;
-  formatConfigurable: boolean;
-  outputSchema: string | null;
-  jsonlSchema?: string | null;
-  sarifSchema?: string | null;
-  exitCodes: ExitCodeMeaning[];
-  exitCodePassthrough?: { min: number; max: number; description: string };
-  stream: { success: ContractStream; findings?: ContractStream } | null;
-  writes: boolean | null;
-  stability: "stable" | "experimental";
-  notes?: string;
-}
-
+/** What a host hands an emitter, keyed by space-joined command id, e.g. `"md graph"`. */
 export type CommandContractRegistry = Record<string, CommandContract>;
-
-export interface DescribedArgument {
-  name: string;
-  description: string;
-  arity: Arity;
-  valueType: ValueType | null;
-  allowedValues: string[] | null;
-  default?: unknown;
-}
-
-export interface DescribedOption {
-  name: string;
-  aliases: string[];
-  description: string;
-  valueName: string | null;
-  arity: Arity;
-  required: boolean;
-  negatable: boolean;
-  valueType: ValueType | null;
-  allowedValues: string[] | null;
-  recursive: boolean;
-  default?: unknown;
-}
-
-export interface DescribedCommand {
-  id: string;
-  path: string[];
-  description: string;
-  usage: string;
-  arguments: DescribedArgument[];
-  options: DescribedOption[];
-  subcommands: string[];
-  formats: string[] | null;
-  defaultFormat: string | null;
-  formatConfigurable: boolean;
-  outputSchema: string | null;
-  jsonlSchema?: string | null;
-  sarifSchema?: string | null;
-  exitCodes: ExitCodeMeaning[];
-  exitCodePassthrough?: { min: number; max: number; description: string };
-  stream: { success: ContractStream; findings?: ContractStream } | null;
-  writes: boolean | null;
-  stability: Stability;
-  notes?: string;
-}
-
-export interface DescribeResult {
-  schemaVersion: string;
-  tool: { name: string; version: string };
-  formatShorthands: Record<string, string>;
-  advisoryOutput?: AdvisoryOutput;
-  schemas: SchemaRef[];
-  commands: DescribedCommand[];
-}
 
 export function isRequired(arity: Arity): boolean {
   return arity.min >= 1;
