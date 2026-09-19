@@ -15,164 +15,164 @@ using System.Text.Json.Serialization;
 
 namespace CairnTool.CliSchema;
 
-    /// <summary>
-    /// The static contract of a command-line interface. Project configuration is not applied.
-    /// Consumers must ignore properties they do not recognize.
-    /// </summary>
-    public sealed record DescribeResult(
-        string SchemaVersion,
-        ToolInfo Tool,
-        IReadOnlyDictionary<string, string> FormatShorthands,
-        IReadOnlyList<SchemaRef> Schemas,
-        IReadOnlyList<DescribedCommand> Commands) {
-        /// <summary>
-        /// Machine-stream guarantees for an advisory notice. Omitted when the tool has none.
-        /// </summary>
-        [JsonPropertyName("advisoryOutput")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public AdvisoryOutput? AdvisoryOutput { get; init; }
-    }
-
-    public sealed record ToolInfo(
-        string Name,
-        string Version);
-
+/// <summary>
+/// The static contract of a command-line interface. Project configuration is not applied.
+/// Consumers must ignore properties they do not recognize.
+/// </summary>
+public sealed record DescribeResult(
+    string SchemaVersion,
+    ToolInfo Tool,
+    IReadOnlyDictionary<string, string> FormatShorthands,
+    IReadOnlyList<SchemaRef> Schemas,
+    IReadOnlyList<DescribedCommand> Commands) {
     /// <summary>
     /// Machine-stream guarantees for an advisory notice. Omitted when the tool has none.
     /// </summary>
-    public sealed record AdvisoryOutput(
-        string Description,
-        string Stream,
-        IReadOnlyList<string> SuppressedWhen,
-        string OptOutEnv);
+    [JsonPropertyName("advisoryOutput")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public AdvisoryOutput? AdvisoryOutput { get; init; }
+}
 
-    public sealed record SchemaRef(
-        string Id,
-        string Uri,
-        string Title,
-        IReadOnlyList<string> Commands);
+public sealed record ToolInfo(
+    string Name,
+    string Version);
 
-    public sealed record Arity(
-        int Min,
-        int? Max);
+/// <summary>
+/// Machine-stream guarantees for an advisory notice. Omitted when the tool has none.
+/// </summary>
+public sealed record AdvisoryOutput(
+    string Description,
+    string Stream,
+    IReadOnlyList<string> SuppressedWhen,
+    string OptOutEnv);
 
-    public sealed record DescribedCommand(
-        string Id,
-        IReadOnlyList<string> Path,
-        string Description,
-        string Usage,
-        IReadOnlyList<DescribedArgument> Arguments,
-        IReadOnlyList<DescribedOption> Options,
-        IReadOnlyList<string> Subcommands,
-        IReadOnlyList<string>? Formats,
-        string? DefaultFormat,
-        bool FormatConfigurable,
-        string? OutputSchema,
-        IReadOnlyList<ExitCodeMeaning> ExitCodes,
-        CommandStream? Stream,
-        bool? Writes,
-        string Stability) {
-        [JsonPropertyName("jsonlSchema")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? JsonlSchema { get; init; }
+public sealed record SchemaRef(
+    string Id,
+    string Uri,
+    string Title,
+    IReadOnlyList<string> Commands);
 
-        [JsonPropertyName("sarifSchema")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? SarifSchema { get; init; }
+public sealed record Arity(
+    int Min,
+    int? Max);
 
-        /// <summary>
-        /// Present only when the command forwards a child process's exit status verbatim.
-        /// </summary>
-        [JsonPropertyName("exitCodePassthrough")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ExitCodePassthrough? ExitCodePassthrough { get; init; }
+public sealed record DescribedCommand(
+    string Id,
+    IReadOnlyList<string> Path,
+    string Description,
+    string Usage,
+    IReadOnlyList<DescribedArgument> Arguments,
+    IReadOnlyList<DescribedOption> Options,
+    IReadOnlyList<string> Subcommands,
+    IReadOnlyList<string>? Formats,
+    string? DefaultFormat,
+    bool FormatConfigurable,
+    string? OutputSchema,
+    IReadOnlyList<ExitCodeMeaning> ExitCodes,
+    CommandStream? Stream,
+    bool? Writes,
+    string Stability) {
+    [JsonPropertyName("jsonlSchema")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? JsonlSchema { get; init; }
 
-        [JsonPropertyName("notes")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Notes { get; init; }
-    }
-
-    public sealed record ExitCodeMeaning(
-        int Code,
-        string Meaning);
+    [JsonPropertyName("sarifSchema")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? SarifSchema { get; init; }
 
     /// <summary>
     /// Present only when the command forwards a child process's exit status verbatim.
     /// </summary>
-    public sealed record ExitCodePassthrough(
-        int Min,
-        int Max,
-        string Description);
+    [JsonPropertyName("exitCodePassthrough")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ExitCodePassthrough? ExitCodePassthrough { get; init; }
 
-    public sealed record CommandStream(
-        string Success) {
-        /// <summary>
-        /// Permitted values: stdout, stderr.
-        /// </summary>
-        [JsonPropertyName("findings")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Findings { get; init; }
-    }
+    [JsonPropertyName("notes")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Notes { get; init; }
+}
+
+public sealed record ExitCodeMeaning(
+    int Code,
+    string Meaning);
+
+/// <summary>
+/// Present only when the command forwards a child process's exit status verbatim.
+/// </summary>
+public sealed record ExitCodePassthrough(
+    int Min,
+    int Max,
+    string Description);
+
+public sealed record CommandStream(
+    string Success) {
+    /// <summary>
+    /// Permitted values: stdout, stderr.
+    /// </summary>
+    [JsonPropertyName("findings")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Findings { get; init; }
+}
+
+/// <summary>
+/// What a host declares about one command: the facts a CLI framework cannot know. A framework
+/// supplies the command tree, the options and their arity; everything here has to be stated. An
+/// emitter merges this with what it walked to produce a `command`. A command with no contract
+/// is emitted with `stability: "undeclared"` rather than rejected, so a missing row is a
+/// visible gap and not a crash.
+/// </summary>
+public sealed record CommandContract(
+    IReadOnlyList<string>? Formats,
+    string? DefaultFormat,
+    bool FormatConfigurable,
+    string? OutputSchema,
+    IReadOnlyList<ExitCodeMeaning> ExitCodes,
+    CommandStream? Stream,
+    bool? Writes,
+    string Stability) {
+    [JsonPropertyName("jsonlSchema")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? JsonlSchema { get; init; }
+
+    [JsonPropertyName("sarifSchema")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? SarifSchema { get; init; }
 
     /// <summary>
-    /// What a host declares about one command: the facts a CLI framework cannot know. A framework
-    /// supplies the command tree, the options and their arity; everything here has to be stated. An
-    /// emitter merges this with what it walked to produce a `command`. A command with no contract
-    /// is emitted with `stability: "undeclared"` rather than rejected, so a missing row is a
-    /// visible gap and not a crash.
+    /// Present only when the command forwards a child process's exit status verbatim.
     /// </summary>
-    public sealed record CommandContract(
-        IReadOnlyList<string>? Formats,
-        string? DefaultFormat,
-        bool FormatConfigurable,
-        string? OutputSchema,
-        IReadOnlyList<ExitCodeMeaning> ExitCodes,
-        CommandStream? Stream,
-        bool? Writes,
-        string Stability) {
-        [JsonPropertyName("jsonlSchema")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? JsonlSchema { get; init; }
+    [JsonPropertyName("exitCodePassthrough")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ExitCodePassthrough? ExitCodePassthrough { get; init; }
 
-        [JsonPropertyName("sarifSchema")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? SarifSchema { get; init; }
+    [JsonPropertyName("notes")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Notes { get; init; }
+}
 
-        /// <summary>
-        /// Present only when the command forwards a child process's exit status verbatim.
-        /// </summary>
-        [JsonPropertyName("exitCodePassthrough")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ExitCodePassthrough? ExitCodePassthrough { get; init; }
+public sealed record DescribedArgument(
+    string Name,
+    string Description,
+    Arity Arity,
+    string? ValueType,
+    IReadOnlyList<string>? AllowedValues) {
+    [JsonPropertyName("default")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? @Default { get; init; }
+}
 
-        [JsonPropertyName("notes")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? Notes { get; init; }
-    }
-
-    public sealed record DescribedArgument(
-        string Name,
-        string Description,
-        Arity Arity,
-        string? ValueType,
-        IReadOnlyList<string>? AllowedValues) {
-        [JsonPropertyName("default")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public object? @Default { get; init; }
-    }
-
-    public sealed record DescribedOption(
-        string Name,
-        IReadOnlyList<string> Aliases,
-        string Description,
-        string? ValueName,
-        Arity Arity,
-        bool Required,
-        bool Negatable,
-        string? ValueType,
-        IReadOnlyList<string>? AllowedValues,
-        bool Recursive) {
-        [JsonPropertyName("default")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public object? @Default { get; init; }
-    }
+public sealed record DescribedOption(
+    string Name,
+    IReadOnlyList<string> Aliases,
+    string Description,
+    string? ValueName,
+    Arity Arity,
+    bool Required,
+    bool Negatable,
+    string? ValueType,
+    IReadOnlyList<string>? AllowedValues,
+    bool Recursive) {
+    [JsonPropertyName("default")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public object? @Default { get; init; }
+}
