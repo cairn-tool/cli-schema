@@ -25,13 +25,12 @@ jobs:
   release:
     name: Publish npm and NuGet
     runs-on: ubuntu-latest
-    # Deliberately thin. Everything semantic-release *writes* goes through the
-    # App installation token minted below, not through GITHUB_TOKEN, because
-    # the main ruleset can only grant a bypass to an org-installed App -- and
-    # github-actions[bot] is not one.
     permissions:
-      contents: read # checkout only
-      id-token: write # OIDC trusted publishing (npm and nuget.org), and the provenance attestation
+      # semantic-release writes the tag, the CHANGELOG commit and the GitHub
+      # Release through the built-in GITHUB_TOKEN, so this job needs write.
+      contents: write
+      # OIDC, for the nuget.org key exchange and npm provenance.
+      id-token: write
     # Only for a green CI run on a push to main — not for PR CI runs.
     if: >-
       github.event_name == 'workflow_dispatch' ||
@@ -39,20 +38,6 @@ jobs:
        github.event.workflow_run.event == 'push' &&
        github.event.workflow_run.head_branch == 'main')
     steps:
-      # Mints a short-lived installation token for the release App. It expires
-      # in an hour, so nothing long-lived is handed to the job beyond the App's
-      # own private key. The App is the ruleset's bypass actor; semantic-release
-      # pushing as github-actions[bot] is rejected by the required status checks.
-      - name: Mint a release token
-        id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-        with:
-          # The secret holds the numeric App ID, not the Client ID. The action
-          # forwards either unchanged as the JWT issuer, and GitHub accepts both
-          # there; `app-id` is the same input under a deprecated name.
-          client-id: ${{ secrets.RELEASE_APP_ID }}
-          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Explicit ref: a workflow_run checkout otherwise defaults to the
@@ -97,25 +82,20 @@ jobs:
         with:
           user: bstockus
 
-      # npm authentication is OIDC only. The trusted publisher on npmjs.com for
-      # both packages is registered against this repository and this workflow's
-      # filename, and no token is handed to the job: the plugin attempts the
-      # OIDC exchange first and would fall back to NPM_TOKEN if one were set,
-      # so leaving the variable out is what guarantees a publish never silently
-      # succeeds on a credential. The 404 "package not found" the exchange
-      # returns when the publisher is missing or misnamed is therefore fatal
-      # here, and it is caught at verification, before the tag exists.
-      # (v1.0.0 was bootstrapped with a token, since npm only lets a trusted
-      # publisher be configured on a package that already exists.)
+      # npm auth precedence is the plugin's own: it attempts the OIDC exchange
+      # first and falls back to NPM_TOKEN only if that fails. Keeping the token
+      # here therefore costs nothing when a trusted publisher is registered, and
+      # is what keeps releases working when one is not.
       #
-      # Provenance is automatic under trusted publishing; `publishConfig` keeps
-      # it explicit so the intent survives if the auth path ever changes.
+      # To go keyless: register a trusted publisher for BOTH @cairn-tool/cli-schema
+      # and @cairn-tool/cli-schema-commander against this repository and this
+      # workflow's filename, then delete NPM_TOKEN and NODE_AUTH_TOKEN below.
+      # After that a missing or misnamed publisher fails at verifyConditions,
+      # before a tag exists, instead of silently publishing on a credential.
       - name: semantic-release
         env:
-          # The App installation token, not GITHUB_TOKEN: it authenticates the
-          # tag, the CHANGELOG commit, and the GitHub Release, and it is the
-          # identity the main ruleset grants a bypass to. The two registries are
-          # separate identities again, each established by its OIDC exchange.
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
         run: npx semantic-release
